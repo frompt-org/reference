@@ -1,6 +1,7 @@
 {
   "base": "https://raw.githubusercontent.com/f-prompts/prompts/main/prompts",
   "manifest_version": 2,
+  "not_after": "2026-09-29T22:16:05Z",
   "prompts": [
     {
       "id": "help-me",

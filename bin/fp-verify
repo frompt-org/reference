@@ -27,6 +27,22 @@ for i in "$@"; do
   prev="$i"
 done
 
+# Once fpa.registered exists, this workspace has opted into the registered model,
+# and a catalog absent from it was never agreed to. A workspace with no such file
+# is simply not using the model, so nothing changes for it.
+registering=""
+for i in "$@"; do [ "$i" = "--registering" ] && registering=1; done
+
+if [ -n "$from" ] && [ -z "$registering" ] && [ -f "$here/fpa.registered" ]; then
+  base_key="${from%/}"
+  if ! grep -qs "^${base_key} " "$here/fpa.registered"; then
+    echo "fp-verify: $base_key is not in fpa.registered." >&2
+    echo "  This workspace registers the catalogs it accepts. Register it deliberately:" >&2
+    echo "    bin/fp-register $base_key" >&2
+    exit 1
+  fi
+fi
+
 work="$here"
 if [ -n "$from" ]; then
   [ -f allowed_signers ] || { echo "fp-verify: no local allowed_signers -- the trust root must be
@@ -75,21 +91,50 @@ python3 - "$id" "$base" "$here" "$from" <<'PY'
 import hashlib, json, pathlib, sys, urllib.request
 wanted, base, root, origin = sys.argv[1], sys.argv[2], pathlib.Path(sys.argv[3]), sys.argv[4]
 manifest = json.load(open("index.json"))
+# Expiry first, because it is the half that needs no memory. A serial floor only
+# protects a client that has already seen something newer; a fresh agent, a wiped
+# .fpa or a clean container has no floor at all, and would accept an arbitrarily
+# old signed bundle. `not_after` kills a replay on its own.
+import datetime
+now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+not_after = manifest.get("not_after")
+if not not_after:
+    print("fp-verify: manifest carries no not_after -- cannot tell a current manifest from a "
+          "replayed one. Refusing.", file=sys.stderr)
+    sys.exit(1)
+if now > not_after:
+    print(f"fp-verify: manifest expired at {not_after} (now {now}).\n"
+          "  A signature stays valid forever; the manifest is not meant to. The publisher "
+          "re-signs, they do not ask you to trust an old one.", file=sys.stderr)
+    sys.exit(1)
+
 # Freshness: a signed manifest older than the last one seen is a replay, and every
 # signature on it verifies. The floor is what makes that detectable.
-seen = root / ".fpa" / "manifest-serial"
+#
+# Kept PER CATALOG, keyed by the manifest's own `base`. One global floor meant
+# that adopting from a second publisher refused whichever catalog had the lower
+# serial -- a brand new catalog starting at 1 read as a rollback of an unrelated
+# one at 45. `base` is inside the signed bytes, so it cannot be forged to reset
+# a floor without breaking the signature.
+seen = root / ".fpa" / "manifest-serials.json"
+catalog = manifest.get("base", "")
 serial = int(manifest.get("serial", 0))
+floors = {}
 if seen.exists():
     try:
-        floor = int(seen.read_text().strip())
-    except ValueError:
-        floor = 0
+        floors = json.loads(seen.read_text())
+    except json.JSONDecodeError:
+        floors = {}
+if catalog in floors:
+    floor = int(floors[catalog])
     if serial < floor:
-        print(f"fp-verify: manifest serial {serial} is older than {floor}, already seen here.\n"
+        print(f"fp-verify: manifest serial {serial} from {catalog} is older than {floor}, "
+              "already seen from that catalog.\n"
               "  A validly signed but stale manifest is a rollback. Refusing.", file=sys.stderr)
         sys.exit(1)
+floors[catalog] = serial
 seen.parent.mkdir(parents=True, exist_ok=True)
-seen.write_text(str(serial) + "\n")
+seen.write_text(json.dumps(floors, indent=2, sort_keys=True) + "\n")
 wanted, _, selector = wanted.partition("@")
 group = next((p for p in manifest["prompts"] if p["id"] == wanted), None)
 if group is None:
@@ -127,6 +172,11 @@ if "managed" not in [c.strip() for c in entry["contexts"].split(",")]:
     print(f"fp-verify: {wanted} declares contexts [{entry['contexts']}] -- it is not fit for the "
           "managed context, so a signature does not authorize it (FPA.md AC1).", file=sys.stderr)
     sys.exit(1)
+soon = (datetime.datetime.strptime(not_after, "%Y-%m-%dT%H:%M:%SZ")
+        .replace(tzinfo=datetime.timezone.utc) - datetime.datetime.now(datetime.timezone.utc)).days
+if soon <= 3:
+    print(f"fp-verify: note -- this manifest expires in {soon} day(s), on {not_after}",
+          file=sys.stderr)
 print(f"authorized: {wanted} v{entry['version']} digest {got[:12]} "
-      f"contexts [{entry['contexts']}] serial {serial} source {src}")
+      f"contexts [{entry['contexts']}] serial {serial} expires {not_after} source {src}")
 PY
