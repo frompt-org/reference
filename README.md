@@ -4,7 +4,7 @@
 
 **You are in a catalog** — a signed manifest plus the documents it lists. A catalog is a shape, not a privilege: anyone who can serve static files can publish one, and no catalog is more official than another. This is simply the first.
 
-The protocol, the tools and the spec are not here; they are in [`f-prompts/fpa`](https://github.com/f-prompts/fpa). Start at [`README`](https://github.com/f-prompts/f-prompts#readme) if none of the above was familiar.
+The protocol, the tools and the spec are not here; they are in [`frompt-org/fpa`](https://github.com/frompt-org/fpa). Start at [`README`](https://github.com/frompt-org/frompt#readme) if none of the above was familiar.
 
 **This catalog is private.** That costs nothing: the protocol's trust comes from a signed
 manifest and a locally held key, not from being reachable anonymously, so `gh:` fetches it
@@ -16,7 +16,7 @@ index.json                        the signed manifest; a client fetches this fir
 index.json.sig
 INDEX.md                          the same thing, for people
 publisher.pub                     the key — read it here once, obtain it elsewhere (below)
-prompts/<id>/<version>.prompt.md  the documents, immutable
+prompts/<id>/<version>.frompt.md  the documents, immutable
 ```
 
 ## Adopting from here
@@ -26,14 +26,14 @@ A pilot reads a prompt, then sends the phrase from its final `## Consent` sectio
 An unattended client verifies instead of reading:
 
 ```bash
-fp-verify pr-review@2.0.0 --from gh:f-prompts/reference@main    # private: the GitHub API
+fp-verify pr-review@2.0.0 --from gh:frompt-org/reference@main    # private: the GitHub API
 fp-resolve pr-review@latest --lock                            # against a committed fpa.lock
 ```
 
 A `raw.githubusercontent.com` base works the same way, and will 404 until this repository is
 public — the transport changes, the digest does not.
 
-Tools and protocol: [`fpa`](https://github.com/f-prompts/fpa) —
+Tools and protocol: [`fpa`](https://github.com/frompt-org/fpa) —
 the spec is `FPA.md`, and `VISION.md` explains what a catalog is for and who else is meant to
 publish one.
 
@@ -43,10 +43,10 @@ publish one.
 
 ## Publishing here
 
-Versions are immutable: `prompts/pr-review/2.0.0.prompt.md` never changes its bytes. A change is a new version, because every lock file and every confirmation phrase in the world is bound to the digest of what was published.
+Versions are immutable: `prompts/pr-review/2.0.0.frompt.md` never changes its bytes. A change is a new version, because every lock file and every confirmation phrase in the world is bound to the digest of what was published.
 
 ```bash
-fp-publish ~/f-prompts/reference     # from the protocol repo: stage the documents
+fp-publish ~/frompt/reference     # from the protocol repo: stage the documents
 fp-index                           # rebuild INDEX.md and index.json
 fp-sign                            # sign the manifest, key from outside the repo
 git add -A && git commit && git push
@@ -58,9 +58,9 @@ Commit the prompts, the manifest and its signature together. Split across commit
 
 | Question | Document |
 |---|---|
-| What is a foreign prompt, and how do I try one? | [`fpa/README.md`](https://github.com/f-prompts/f-prompts#readme) |
-| What must an agent actually do? | [`FPA.md`](https://github.com/f-prompts/fpa/blob/main/FPA.md) — normative |
-| Why does this project exist, and who else is meant to publish? | [`VISION.md`](https://github.com/f-prompts/f-prompts/blob/main/VISION.md) |
-| What am I trusting, and what am I not? | [`SECURITY.md`](https://github.com/f-prompts/fpa/blob/main/SECURITY.md) |
+| What is a foreign prompt, and how do I try one? | [`fpa/README.md`](https://github.com/frompt-org/frompt#readme) |
+| What must an agent actually do? | [`FPA.md`](https://github.com/frompt-org/fpa/blob/main/FPA.md) — normative |
+| Why does this project exist, and who else is meant to publish? | [`VISION.md`](https://github.com/frompt-org/frompt/blob/main/VISION.md) |
+| What am I trusting, and what am I not? | [`SECURITY.md`](https://github.com/frompt-org/fpa/blob/main/SECURITY.md) |
 | What is published here, with digests? | [`INDEX.md`](INDEX.md) |
-| What do the words mean? | [`TERMINOLOGY.md`](https://github.com/f-prompts/fpa/blob/main/TERMINOLOGY.md) |
+| What do the words mean? | [`TERMINOLOGY.md`](https://github.com/frompt-org/fpa/blob/main/TERMINOLOGY.md) |
