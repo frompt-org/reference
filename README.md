@@ -2,6 +2,11 @@
 
 Foreign prompts, published. A **catalog** is a shape, not a privilege — anyone who can serve static files can publish one, and no catalog is more official than another. This is simply the first.
 
+**This catalog is private.** That costs nothing: the protocol's trust comes from a signed
+manifest and a locally held key, not from being reachable anonymously, so `gh:` fetches it
+through the credential you already have and the digest still binds. Publishing is a decision
+about audience.
+
 ```
 index.json                        the signed manifest; a client fetches this first
 index.json.sig
@@ -17,11 +22,16 @@ A pilot reads a prompt, then sends the phrase from its final `## Consent` sectio
 An unattended client verifies instead of reading:
 
 ```bash
-fp-verify pr-review@2.0.0 --from https://raw.githubusercontent.com/f-prompts/prompts/main
-fp-resolve pr-review@latest --lock          # against a committed fpa.lock
+fp-verify pr-review@2.0.0 --from gh:f-prompts/prompts@main    # private: the GitHub API
+fp-resolve pr-review@latest --lock                            # against a committed fpa.lock
 ```
 
-Tools and protocol: [`foreign-prompts`](https://github.com/agent-realm/foreign-prompts).
+A `raw.githubusercontent.com` base works the same way, and will 404 until this repository is
+public — the transport changes, the digest does not.
+
+Tools and protocol: [`foreign-prompts`](https://github.com/agent-realm/foreign-prompts) —
+the spec is `FPA.md`, and `VISION.md` explains what a catalog is for and who else is meant to
+publish one.
 
 ## The one thing to get right
 
