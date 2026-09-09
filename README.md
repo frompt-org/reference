@@ -4,7 +4,7 @@
 
 **You are in a catalog** — a signed manifest plus the documents it lists. A catalog is a shape, not a privilege: anyone who can serve static files can publish one, and no catalog is more official than another. This is simply the first.
 
-The protocol, the tools and the spec are not here; they are in [`agent-realm/foreign-prompts`](https://github.com/agent-realm/foreign-prompts). Start at [`README`](https://github.com/agent-realm/foreign-prompts#readme) if none of the above was familiar.
+The protocol, the tools and the spec are not here; they are in [`f-prompts/foreign-prompts`](https://github.com/f-prompts/foreign-prompts). Start at [`README`](https://github.com/f-prompts/foreign-prompts#readme) if none of the above was familiar.
 
 **This catalog is private.** That costs nothing: the protocol's trust comes from a signed
 manifest and a locally held key, not from being reachable anonymously, so `gh:` fetches it
@@ -33,7 +33,7 @@ fp-resolve pr-review@latest --lock                            # against a commit
 A `raw.githubusercontent.com` base works the same way, and will 404 until this repository is
 public — the transport changes, the digest does not.
 
-Tools and protocol: [`foreign-prompts`](https://github.com/agent-realm/foreign-prompts) —
+Tools and protocol: [`foreign-prompts`](https://github.com/f-prompts/foreign-prompts) —
 the spec is `FPA.md`, and `VISION.md` explains what a catalog is for and who else is meant to
 publish one.
 
@@ -58,9 +58,9 @@ Commit the prompts, the manifest and its signature together. Split across commit
 
 | Question | Document |
 |---|---|
-| What is a foreign prompt, and how do I try one? | [`foreign-prompts/README.md`](https://github.com/agent-realm/foreign-prompts#readme) |
-| What must an agent actually do? | [`FPA.md`](https://github.com/agent-realm/foreign-prompts/blob/main/FPA.md) — normative |
-| Why does this project exist, and who else is meant to publish? | [`VISION.md`](https://github.com/agent-realm/foreign-prompts/blob/main/VISION.md) |
-| What am I trusting, and what am I not? | [`SECURITY.md`](https://github.com/agent-realm/foreign-prompts/blob/main/SECURITY.md) |
+| What is a foreign prompt, and how do I try one? | [`foreign-prompts/README.md`](https://github.com/f-prompts/foreign-prompts#readme) |
+| What must an agent actually do? | [`FPA.md`](https://github.com/f-prompts/foreign-prompts/blob/main/FPA.md) — normative |
+| Why does this project exist, and who else is meant to publish? | [`VISION.md`](https://github.com/f-prompts/foreign-prompts/blob/main/VISION.md) |
+| What am I trusting, and what am I not? | [`SECURITY.md`](https://github.com/f-prompts/foreign-prompts/blob/main/SECURITY.md) |
 | What is published here, with digests? | [`INDEX.md`](INDEX.md) |
-| What do the words mean? | [`TERMINOLOGY.md`](https://github.com/agent-realm/foreign-prompts/blob/main/TERMINOLOGY.md) |
+| What do the words mean? | [`TERMINOLOGY.md`](https://github.com/f-prompts/foreign-prompts/blob/main/TERMINOLOGY.md) |
