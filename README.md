@@ -1,4 +1,4 @@
-# The reference catalog
+# reference — the reference catalog
 
 **A foreign prompt is a prompt acquired from somewhere else — usually a URL — and adopted, on purpose, by an agent that did not write it.** It is prompt injection you chose: the pilot names one document, the document declares what it intends, the agent announces that it started, and it ends.
 
@@ -26,7 +26,7 @@ A pilot reads a prompt, then sends the phrase from its final `## Consent` sectio
 An unattended client verifies instead of reading:
 
 ```bash
-fp-verify pr-review@2.0.0 --from gh:f-prompts/catalog@main    # private: the GitHub API
+fp-verify pr-review@2.0.0 --from gh:f-prompts/reference@main    # private: the GitHub API
 fp-resolve pr-review@latest --lock                            # against a committed fpa.lock
 ```
 
@@ -46,7 +46,7 @@ publish one.
 Versions are immutable: `prompts/pr-review/2.0.0.prompt.md` never changes its bytes. A change is a new version, because every lock file and every confirmation phrase in the world is bound to the digest of what was published.
 
 ```bash
-fp-publish ~/f-prompts/catalog     # from the protocol repo: stage the documents
+fp-publish ~/f-prompts/reference     # from the protocol repo: stage the documents
 fp-index                           # rebuild INDEX.md and index.json
 fp-sign                            # sign the manifest, key from outside the repo
 git add -A && git commit && git push
