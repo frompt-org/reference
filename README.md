@@ -33,7 +33,7 @@ fp-resolve pr-review@latest --lock                            # against a commit
 A `raw.githubusercontent.com` base works the same way, and will 404 until this repository is
 public — the transport changes, the digest does not.
 
-Tools and protocol: [`foreign-prompts`](https://github.com/f-prompts/fpa) —
+Tools and protocol: [`fpa`](https://github.com/f-prompts/fpa) —
 the spec is `FPA.md`, and `VISION.md` explains what a catalog is for and who else is meant to
 publish one.
 
