@@ -1,6 +1,10 @@
 # The reference catalog
 
-Foreign prompts, published. A **catalog** is a shape, not a privilege — anyone who can serve static files can publish one, and no catalog is more official than another. This is simply the first.
+**A foreign prompt is a prompt acquired from somewhere else — usually a URL — and adopted, on purpose, by an agent that did not write it.** It is prompt injection you chose: the pilot names one document, the document declares what it intends, the agent announces that it started, and it ends.
+
+**You are in a catalog** — a signed manifest plus the documents it lists. A catalog is a shape, not a privilege: anyone who can serve static files can publish one, and no catalog is more official than another. This is simply the first.
+
+The protocol, the tools and the spec are not here; they are in [`agent-realm/foreign-prompts`](https://github.com/agent-realm/foreign-prompts). Start at [`README`](https://github.com/agent-realm/foreign-prompts#readme) if none of the above was familiar.
 
 **This catalog is private.** That costs nothing: the protocol's trust comes from a signed
 manifest and a locally held key, not from being reachable anonymously, so `gh:` fetches it
@@ -49,3 +53,14 @@ git add -A && git commit && git push
 ```
 
 Commit the prompts, the manifest and its signature together. Split across commits, a client can fetch a manifest that does not match what is served.
+
+## Reading further
+
+| Question | Document |
+|---|---|
+| What is a foreign prompt, and how do I try one? | [`foreign-prompts/README.md`](https://github.com/agent-realm/foreign-prompts#readme) |
+| What must an agent actually do? | [`FPA.md`](https://github.com/agent-realm/foreign-prompts/blob/main/FPA.md) — normative |
+| Why does this project exist, and who else is meant to publish? | [`VISION.md`](https://github.com/agent-realm/foreign-prompts/blob/main/VISION.md) |
+| What am I trusting, and what am I not? | [`SECURITY.md`](https://github.com/agent-realm/foreign-prompts/blob/main/SECURITY.md) |
+| What is published here, with digests? | [`INDEX.md`](INDEX.md) |
+| What do the words mean? | [`TERMINOLOGY.md`](https://github.com/agent-realm/foreign-prompts/blob/main/TERMINOLOGY.md) |
