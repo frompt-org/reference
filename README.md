@@ -1,3 +1,9 @@
+> **Retired 2026-10-06, archived read-only.** Its documents were byte-identical to the
+> [`catalog`](https://github.com/frompt-org/catalog), and its stated job — being what the docs and
+> the conformance suite point at — was already done by [`protocol`](https://github.com/frompt-org/protocol),
+> which publishes the same frompts as a signed catalog of its own. Kept as the record, not maintained.
+> Its manifest expires 2026-10-09 and will not be renewed: every verify against it refuses after that.
+
 # reference — the reference catalog
 
 **A foreign prompt is a prompt acquired from somewhere else — usually a URL — and adopted, on purpose, by an agent that did not write it.** It is prompt injection you chose: the pilot names one document, the document declares what it intends, the agent announces that it started, and it ends.
